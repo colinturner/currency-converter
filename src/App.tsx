@@ -1,25 +1,100 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import axios from "axios";
+
+// Styled Components
+
+const CurrencyInput = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 16px;
+`;
+
+const InputField = styled.input``;
+
+const BaseCurrency = styled.span`
+  padding-left: 8px;
+`;
+
+const ResultWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  > * {
+    padding-bottom: 8px;
+  }
+`;
+
+const ForeignAmount = styled.div`
+  padding-right: 8px;
+`;
+
+const ForeignDenomination = styled.div``;
+
+// Helpers
+function sanitizeInput(input: string): number {
+  if (Number.isNaN(Number(input))) {
+    return 0;
+  }
+
+  return Number(input);
+}
+
+interface IData {
+  rates: Record<string, any>;
+}
+
+const DESIRED_DENOMINATIONS = [
+  "USD",
+  "AUD",
+  "NZD",
+  "EUR",
+  "GBP",
+  "NOK",
+  "SEK",
+  "DKK",
+  "CHF",
+];
 
 function App() {
+  const [data, setData] = useState<IData>({ rates: {} });
+  const [base_amount, setBaseAmount] = useState(0);
+
+  useEffect((): void => {
+    const fetchData = async () => {
+      const proxy_url = "https://cors-anywhere.herokuapp.com/";
+      const api_url = "http://api.openrates.io/latest?base=CAD";
+      const result = await axios(proxy_url + api_url);
+      setData(result.data);
+      console.log("result!!! ", result.data);
+    };
+
+    fetchData();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <CurrencyInput>
+        <InputField
+          value={base_amount}
+          onChange={(e): void => setBaseAmount(sanitizeInput(e.target.value))}
+        />
+        <BaseCurrency>CAD</BaseCurrency>
+      </CurrencyInput>
+      {Object.keys(data.rates).map((foreign_denomination) => {
+        if (DESIRED_DENOMINATIONS.includes(foreign_denomination)) {
+          return (
+            <ResultWrapper>
+              <ForeignAmount>
+                {(data.rates[foreign_denomination] * base_amount).toFixed(2)}
+              </ForeignAmount>
+              <ForeignDenomination>{foreign_denomination}</ForeignDenomination>
+            </ResultWrapper>
+          );
+        }
+
+        return null;
+      })}
+    </>
   );
 }
 
