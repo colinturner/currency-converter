@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import moment from "moment";
+import numeral from "numeral";
 
 // Styled Components
 
@@ -45,12 +46,24 @@ const ForeignAmount = styled.div`
 const ForeignDenomination = styled.div``;
 
 // Helpers
-function sanitizeInput(input: string): number {
+export function sanitizeInput(input: string): number {
   if (Number.isNaN(Number(input))) {
     return 0;
   }
 
   return Number(input);
+}
+
+interface ICalculateForeignAmount {
+  rate: number;
+  base_amount: number;
+}
+
+export function calculateForeignAmount({
+  rate,
+  base_amount,
+}: ICalculateForeignAmount): string {
+  return numeral(rate * base_amount).format("0,0.00");
 }
 
 interface IData {
@@ -72,7 +85,7 @@ const DESIRED_DENOMINATIONS = [
 
 function App() {
   const [data, setData] = useState<IData>({ rates: {}, date: "" });
-  const [base_amount, setBaseAmount] = useState(0);
+  const [base_amount, setBaseAmount] = useState(1);
 
   useEffect((): void => {
     const fetchData = async () => {
@@ -103,7 +116,10 @@ function App() {
           return (
             <ResultWrapper>
               <ForeignAmount>
-                {(data.rates[foreign_denomination] * base_amount).toFixed(2)}
+                {calculateForeignAmount({
+                  rate: data.rates[foreign_denomination],
+                  base_amount,
+                })}
               </ForeignAmount>
               <ForeignDenomination>{foreign_denomination}</ForeignDenomination>
             </ResultWrapper>

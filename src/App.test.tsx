@@ -1,9 +1,15 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import App from './App';
+import React from "react";
+import App, { sanitizeInput } from "./App";
 
-test('renders learn react link', () => {
-  const { getByText } = render(<App />);
-  const linkElement = getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+describe("App", () => {
+  describe("sanitizeInput", () => {
+    const input = "123456.67";
+    const expected_result = "123,456.67";
+
+    expect(sanitizeInput(input)).toBe(expected_result);
+
+    const input_2 = "1234";
+    const expected_result_2 = "1,234";
+    expect(sanitizeInput(input_2)).toBe(expected_result_2);
+  });
 });
