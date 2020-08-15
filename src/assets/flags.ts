@@ -1,3 +1,4 @@
+import { ReactComponent as CAFlag } from "./ca.svg";
 import { ReactComponent as USFlag } from "./us.svg";
 import { ReactComponent as UKFlag } from "./gb.svg";
 import { ReactComponent as AUFlag } from "./au.svg";
@@ -9,6 +10,7 @@ import { ReactComponent as NZFlag } from "./nz.svg";
 import { ReactComponent as SEFlag } from "./se.svg";
 
 export {
+  CAFlag,
   USFlag,
   UKFlag,
   AUFlag,

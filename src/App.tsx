@@ -4,6 +4,7 @@ import axios from "axios";
 import moment from "moment";
 import numeral from "numeral";
 import {
+  CAFlag,
   USFlag,
   UKFlag,
   AUFlag,
@@ -62,6 +63,7 @@ const ForeignDenomination = styled.div``;
 // `;
 
 const FLAGS: Record<string, any> = {
+  CAD: CAFlag,
   USD: USFlag,
   GBP: UKFlag,
   AUD: AUFlag,
@@ -135,6 +137,7 @@ function App() {
           onChange={(e): void => setBaseAmount(sanitizeInput(e.target.value))}
         />
         <BaseCurrency>CAD</BaseCurrency>
+        <CAFlag style={{ paddingLeft: "8px", width: "32px" }} />
       </CurrencyInput>
       <AccuracyDisclaimer>
         Information accurate as of: {moment(data.date).format("LL")}
