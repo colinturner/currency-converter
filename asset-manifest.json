@@ -1,19 +1,28 @@
 {
   "files": {
-    "main.js": "/currency-converter/static/js/main.7cc5d110.chunk.js",
-    "main.js.map": "/currency-converter/static/js/main.7cc5d110.chunk.js.map",
+    "main.js": "/currency-converter/static/js/main.a466ecad.chunk.js",
+    "main.js.map": "/currency-converter/static/js/main.a466ecad.chunk.js.map",
     "runtime-main.js": "/currency-converter/static/js/runtime-main.2f40765a.js",
     "runtime-main.js.map": "/currency-converter/static/js/runtime-main.2f40765a.js.map",
     "static/js/2.b06f634b.chunk.js": "/currency-converter/static/js/2.b06f634b.chunk.js",
     "static/js/2.b06f634b.chunk.js.map": "/currency-converter/static/js/2.b06f634b.chunk.js.map",
     "index.html": "/currency-converter/index.html",
-    "precache-manifest.378c87cebdcd1b7fa15765ba7f2d6b6e.js": "/currency-converter/precache-manifest.378c87cebdcd1b7fa15765ba7f2d6b6e.js",
+    "precache-manifest.98bc28cdaf5d00e575ce304a73c36e11.js": "/currency-converter/precache-manifest.98bc28cdaf5d00e575ce304a73c36e11.js",
     "service-worker.js": "/currency-converter/service-worker.js",
-    "static/js/2.b06f634b.chunk.js.LICENSE.txt": "/currency-converter/static/js/2.b06f634b.chunk.js.LICENSE.txt"
+    "static/js/2.b06f634b.chunk.js.LICENSE.txt": "/currency-converter/static/js/2.b06f634b.chunk.js.LICENSE.txt",
+    "static/media/au.503a3a98.svg": "/currency-converter/static/media/au.503a3a98.svg",
+    "static/media/ch.9c26f60a.svg": "/currency-converter/static/media/ch.9c26f60a.svg",
+    "static/media/dk.eb1416e0.svg": "/currency-converter/static/media/dk.eb1416e0.svg",
+    "static/media/eu.ee7f4712.svg": "/currency-converter/static/media/eu.ee7f4712.svg",
+    "static/media/gb.d3ddd602.svg": "/currency-converter/static/media/gb.d3ddd602.svg",
+    "static/media/no.0b41df77.svg": "/currency-converter/static/media/no.0b41df77.svg",
+    "static/media/nz.3241e927.svg": "/currency-converter/static/media/nz.3241e927.svg",
+    "static/media/se.fd663a70.svg": "/currency-converter/static/media/se.fd663a70.svg",
+    "static/media/us.ae656592.svg": "/currency-converter/static/media/us.ae656592.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.2f40765a.js",
     "static/js/2.b06f634b.chunk.js",
-    "static/js/main.7cc5d110.chunk.js"
+    "static/js/main.a466ecad.chunk.js"
   ]
 }
