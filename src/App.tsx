@@ -3,6 +3,17 @@ import styled from "styled-components";
 import axios from "axios";
 import moment from "moment";
 import numeral from "numeral";
+import {
+  USFlag,
+  UKFlag,
+  AUFlag,
+  CHFlag,
+  DKFlag,
+  EUFlag,
+  NOFlag,
+  NZFlag,
+  SEFlag,
+} from "./assets/flags";
 
 // Styled Components
 
@@ -44,6 +55,23 @@ const ForeignAmount = styled.div`
 `;
 
 const ForeignDenomination = styled.div``;
+
+// const USAFlag = styled(Flag)`
+//   width: 20px;
+//   height: 20px;
+// `;
+
+const FLAGS: Record<string, any> = {
+  USD: USFlag,
+  GBP: UKFlag,
+  AUD: AUFlag,
+  CHF: CHFlag,
+  DKK: DKFlag,
+  EUR: EUFlag,
+  NOK: NOFlag,
+  NZD: NZFlag,
+  SEK: SEFlag,
+};
 
 // Helpers
 export function sanitizeInput(input: string): number {
@@ -122,6 +150,12 @@ function App() {
                 })}
               </ForeignAmount>
               <ForeignDenomination>{foreign_denomination}</ForeignDenomination>
+              {/* <USAFlag width="20px" /> */}
+              {FLAGS[foreign_denomination]
+                ? React.createElement(FLAGS[foreign_denomination], {
+                    style: { width: "32px", "padding-left": "8px" },
+                  })
+                : null}
             </ResultWrapper>
           );
         }
