@@ -37,7 +37,10 @@ const CurrencyInput = styled.div`
 const InputField = styled.input``;
 
 const BaseAmount = styled.div`
-  font-size: 24px;
+  font-size: 32px;
+  &: hover {
+    cursor: pointer;
+  }
 `;
 
 const BaseCurrency = styled.span`
@@ -83,6 +86,10 @@ interface ISanitizeInput {
 // Helpers
 export function sanitizeInput({ input, base_amount }: ISanitizeInput): string {
   if (Number.isNaN(Number(input))) {
+    return base_amount;
+  }
+
+  if (input.includes(".") && input.length - input.indexOf(".") > 3) {
     return base_amount;
   }
 
@@ -168,7 +175,7 @@ function App() {
         <CAFlag style={{ paddingLeft: "8px", width: "32px" }} />
       </CurrencyInput>
       <AccuracyDisclaimer>
-        Information accurate as of: {moment(data.date).format("LL")}
+        Data auto-updated on: {moment(data.date).format("LL")}
       </AccuracyDisclaimer>
       {Object.keys(data.rates).map((foreign_denomination) => {
         if (DESIRED_DENOMINATIONS.includes(foreign_denomination)) {
