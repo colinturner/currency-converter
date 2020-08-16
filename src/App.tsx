@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import moment from "moment";
@@ -31,9 +31,14 @@ const CurrencyInput = styled.div`
   display: flex;
   flex-direction: row;
   padding-bottom: 8px;
+  align-items: center;
 `;
 
 const InputField = styled.input``;
+
+const BaseAmount = styled.div`
+  font-size: 24px;
+`;
 
 const BaseCurrency = styled.span`
   padding-left: 8px;
@@ -56,11 +61,6 @@ const ForeignAmount = styled.div`
 `;
 
 const ForeignDenomination = styled.div``;
-
-// const USAFlag = styled(Flag)`
-//   width: 20px;
-//   height: 20px;
-// `;
 
 const FLAGS: Record<string, any> = {
   CAD: CAFlag,
@@ -114,8 +114,11 @@ const DESIRED_DENOMINATIONS = [
 ];
 
 function App() {
+  const input_ref = useRef<HTMLInputElement | null>(null);
+
   const [data, setData] = useState<IData>({ rates: {}, date: "" });
   const [base_amount, setBaseAmount] = useState(1);
+  const [is_editing, setIsEditing] = useState(true);
 
   useEffect((): void => {
     const fetchData = async () => {
@@ -129,13 +132,29 @@ function App() {
     fetchData();
   }, []);
 
+  useEffect((): void => {
+    input_ref && input_ref.current && input_ref.current.focus();
+  }, [is_editing]);
+
+  function handleClick(): void {
+    setIsEditing(true);
+  }
+
   return (
     <Wrapper>
       <CurrencyInput>
-        <InputField
-          value={base_amount}
-          onChange={(e): void => setBaseAmount(sanitizeInput(e.target.value))}
-        />
+        {is_editing ? (
+          <InputField
+            ref={input_ref}
+            value={base_amount}
+            onChange={(e): void => setBaseAmount(sanitizeInput(e.target.value))}
+            onBlur={(): void => setIsEditing(false)}
+          />
+        ) : (
+          <BaseAmount onClick={handleClick}>
+            {numeral(base_amount).format("0,0.00")}
+          </BaseAmount>
+        )}
         <BaseCurrency>CAD</BaseCurrency>
         <CAFlag style={{ paddingLeft: "8px", width: "32px" }} />
       </CurrencyInput>
@@ -153,7 +172,6 @@ function App() {
                 })}
               </ForeignAmount>
               <ForeignDenomination>{foreign_denomination}</ForeignDenomination>
-              {/* <USAFlag width="20px" /> */}
               {FLAGS[foreign_denomination]
                 ? React.createElement(FLAGS[foreign_denomination], {
                     style: { width: "32px", "padding-left": "8px" },
