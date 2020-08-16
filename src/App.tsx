@@ -65,6 +65,7 @@ const ForeignAmount = styled.div`
 
 const ForeignDenomination = styled.div``;
 
+// Constants
 const FLAGS: Record<string, any> = {
   CAD: CAFlag,
   USD: USFlag,
@@ -78,9 +79,32 @@ const FLAGS: Record<string, any> = {
   SEK: SEFlag,
 };
 
+const DESIRED_DENOMINATIONS = [
+  "USD",
+  "AUD",
+  "NZD",
+  "EUR",
+  "GBP",
+  "NOK",
+  "SEK",
+  "DKK",
+  "CHF",
+];
+
+// Interfaces
 interface ISanitizeInput {
   input: string;
   base_amount: string;
+}
+
+interface ICalculateForeignAmount {
+  rate: number;
+  base_amount: string;
+}
+
+interface IData {
+  rates: Record<string, any>;
+  date: string;
 }
 
 // Helpers
@@ -96,11 +120,6 @@ export function sanitizeInput({ input, base_amount }: ISanitizeInput): string {
   return input;
 }
 
-interface ICalculateForeignAmount {
-  rate: number;
-  base_amount: string;
-}
-
 export function calculateForeignAmount({
   rate,
   base_amount,
@@ -108,23 +127,7 @@ export function calculateForeignAmount({
   return numeral(rate * Number(base_amount)).format("0,0.00");
 }
 
-interface IData {
-  rates: Record<string, any>;
-  date: string;
-}
-
-const DESIRED_DENOMINATIONS = [
-  "USD",
-  "AUD",
-  "NZD",
-  "EUR",
-  "GBP",
-  "NOK",
-  "SEK",
-  "DKK",
-  "CHF",
-];
-
+// Default component
 function App() {
   const input_ref = useRef<HTMLInputElement | null>(null);
 
@@ -148,10 +151,6 @@ function App() {
     input_ref && input_ref.current && input_ref.current.focus();
   }, [is_editing]);
 
-  function handleClick(): void {
-    setIsEditing(true);
-  }
-
   return (
     <Wrapper>
       <CurrencyInput>
@@ -167,7 +166,7 @@ function App() {
             onBlur={(): void => setIsEditing(false)}
           />
         ) : (
-          <BaseAmount onClick={handleClick}>
+          <BaseAmount onClick={(): void => setIsEditing(true)}>
             {numeral(base_amount).format("0,0.00")}
           </BaseAmount>
         )}
