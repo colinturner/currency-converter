@@ -75,10 +75,15 @@ const FLAGS: Record<string, any> = {
   SEK: SEFlag,
 };
 
+interface ISanitizeInput {
+  input: string;
+  base_amount: string;
+}
+
 // Helpers
-export function sanitizeInput(input: string): string {
+export function sanitizeInput({ input, base_amount }: ISanitizeInput): string {
   if (Number.isNaN(Number(input))) {
-    return "0";
+    return base_amount;
   }
 
   return input;
@@ -147,7 +152,11 @@ function App() {
           <InputField
             ref={input_ref}
             value={base_amount}
-            onChange={(e): void => setBaseAmount(sanitizeInput(e.target.value))}
+            onChange={(e): void =>
+              setBaseAmount(
+                sanitizeInput({ input: e.target.value, base_amount })
+              )
+            }
             onBlur={(): void => setIsEditing(false)}
           />
         ) : (
