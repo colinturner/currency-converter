@@ -76,24 +76,24 @@ const FLAGS: Record<string, any> = {
 };
 
 // Helpers
-export function sanitizeInput(input: string): number {
+export function sanitizeInput(input: string): string {
   if (Number.isNaN(Number(input))) {
-    return 0;
+    return "0";
   }
 
-  return Number(input);
+  return input;
 }
 
 interface ICalculateForeignAmount {
   rate: number;
-  base_amount: number;
+  base_amount: string;
 }
 
 export function calculateForeignAmount({
   rate,
   base_amount,
 }: ICalculateForeignAmount): string {
-  return numeral(rate * base_amount).format("0,0.00");
+  return numeral(rate * Number(base_amount)).format("0,0.00");
 }
 
 interface IData {
@@ -117,7 +117,7 @@ function App() {
   const input_ref = useRef<HTMLInputElement | null>(null);
 
   const [data, setData] = useState<IData>({ rates: {}, date: "" });
-  const [base_amount, setBaseAmount] = useState(1);
+  const [base_amount, setBaseAmount] = useState<string>("1");
   const [is_editing, setIsEditing] = useState(true);
 
   useEffect((): void => {
