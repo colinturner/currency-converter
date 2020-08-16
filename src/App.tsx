@@ -3,6 +3,7 @@ import styled from "styled-components";
 import axios from "axios";
 import moment from "moment";
 import numeral from "numeral";
+import { Select } from "antd";
 import {
   CAFlag,
   USFlag,
@@ -16,8 +17,9 @@ import {
   SEFlag,
 } from "./assets/flags";
 
-// Styled Components
+const { Option } = Select;
 
+// Styled Components
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -107,6 +109,10 @@ interface IData {
   date: string;
 }
 
+interface ICache {
+  [base: string]: Record<string, any>;
+}
+
 // Helpers
 export function sanitizeInput({ input, base_amount }: ISanitizeInput): string {
   if (Number.isNaN(Number(input))) {
@@ -132,20 +138,24 @@ function App() {
   const input_ref = useRef<HTMLInputElement | null>(null);
 
   const [data, setData] = useState<IData>({ rates: {}, date: "" });
+  const [cache, setCache] = useState<ICache>({});
+  const [base, setBase] = useState<string>("CAD");
   const [base_amount, setBaseAmount] = useState<string>("1");
   const [is_editing, setIsEditing] = useState(true);
 
   useEffect((): void => {
     const fetchData = async () => {
       const proxy_url = "https://cors-anywhere.herokuapp.com/";
-      const api_url = "http://api.openrates.io/latest?base=CAD";
+      const api_url = `http://api.openrates.io/latest?base=${base}`;
       const result = await axios(proxy_url + api_url);
       setData(result.data);
+      setCache({ ...cache, [base]: result.data });
       console.log("result!!! ", result.data);
+      console.log("cache!!! ", cache);
     };
 
     fetchData();
-  }, []);
+  }, [base]);
 
   useEffect((): void => {
     input_ref && input_ref.current && input_ref.current.focus();
@@ -170,11 +180,22 @@ function App() {
             {numeral(base_amount).format("0,0.00")}
           </BaseAmount>
         )}
-        <BaseCurrency>CAD</BaseCurrency>
+        <BaseCurrency>{base}</BaseCurrency>
+        <Select
+          defaultValue="CAD"
+          style={{ width: 120 }}
+          loading={false}
+          onChange={(value): void => setBase(value)}
+        >
+          <Option value="CAD">CAD</Option>
+          <Option value="USD">USD</Option>
+          <Option value="DKK">DKK</Option>
+          <Option value="SEK">SEK</Option>
+        </Select>
         <CAFlag style={{ paddingLeft: "8px", width: "32px" }} />
       </CurrencyInput>
       <AccuracyDisclaimer>
-        Data auto-updated on: {moment(data.date).format("LL")}
+        Exchange rates auto-updated on: {moment(data.date).format("LL")}
       </AccuracyDisclaimer>
       {Object.keys(data.rates).map((foreign_denomination) => {
         if (DESIRED_DENOMINATIONS.includes(foreign_denomination)) {
