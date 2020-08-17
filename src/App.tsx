@@ -39,6 +39,7 @@ const CurrencyInput = styled.div`
 const InputField = styled.input``;
 
 const BaseAmount = styled.div`
+  padding-right: 8px;
   font-size: 32px;
   &: hover {
     cursor: pointer;
@@ -91,6 +92,7 @@ const DESIRED_DENOMINATIONS = [
   "SEK",
   "DKK",
   "CHF",
+  "CAD",
 ];
 
 // Interfaces
@@ -140,6 +142,7 @@ function App() {
   const [data, setData] = useState<IData>({ rates: {}, date: "" });
   const [cache, setCache] = useState<ICache>({});
   const [base, setBase] = useState<string>("CAD");
+  const [is_loading_data, setIsLoadingData] = useState<boolean>(false);
   const [base_amount, setBaseAmount] = useState<string>("1");
   const [is_editing, setIsEditing] = useState(true);
 
@@ -147,11 +150,12 @@ function App() {
     const fetchData = async () => {
       const proxy_url = "https://cors-anywhere.herokuapp.com/";
       const api_url = `http://api.openrates.io/latest?base=${base}`;
+      setIsLoadingData(true);
       const result = await axios(proxy_url + api_url);
+      setIsLoadingData(false);
       setData(result.data);
       setCache({ ...cache, [base]: result.data });
       console.log("result!!! ", result.data);
-      console.log("cache!!! ", cache);
     };
 
     fetchData();
@@ -181,24 +185,29 @@ function App() {
           </BaseAmount>
         )}
         <Select
-          defaultValue="CAD"
+          defaultValue={base}
           style={{ width: 120 }}
+          loading={is_loading_data}
           onChange={(value): void => setBase(value)}
         >
-          <Option value="CAD">CAD</Option>
-          <Option value="USD">USD</Option>
-          <Option value="DKK">DKK</Option>
-          <Option value="SEK">SEK</Option>
+          {DESIRED_DENOMINATIONS.filter((currency) => currency !== base).map(
+            (currency) => (
+              <Option value={currency}>{currency}</Option>
+            )
+          )}
         </Select>
         {React.createElement(FLAGS[base], {
-          style: { width: "32px", "padding-left": "8px" },
+          style: { width: "48px", paddingLeft: "8px" },
         })}
       </CurrencyInput>
       <AccuracyDisclaimer>
         Exchange rates auto-updated on: {moment(data.date).format("LL")}
       </AccuracyDisclaimer>
       {Object.keys(data.rates).map((foreign_denomination) => {
-        if (DESIRED_DENOMINATIONS.includes(foreign_denomination)) {
+        if (
+          DESIRED_DENOMINATIONS.includes(foreign_denomination) &&
+          foreign_denomination !== base
+        ) {
           return (
             <ResultWrapper>
               <ForeignAmount>
