@@ -201,7 +201,8 @@ function App() {
         })}
       </CurrencyInput>
       <AccuracyDisclaimer>
-        Exchange rates auto-updated on: {moment(data.date).format("LL")}
+        Exchange rates auto-updated on:{" "}
+        {data.date ? moment(data.date).format("LL") : "Loading..."}
       </AccuracyDisclaimer>
       {Object.keys(data.rates).map((foreign_denomination) => {
         if (
