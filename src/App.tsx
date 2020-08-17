@@ -3,7 +3,7 @@ import styled from "styled-components";
 import axios from "axios";
 import moment from "moment";
 import numeral from "numeral";
-import { Select } from "antd";
+import "antd/dist/antd.css";
 import {
   CAFlag,
   USFlag,
@@ -16,7 +16,7 @@ import {
   NZFlag,
   SEFlag,
 } from "./assets/flags";
-
+import { Select } from "antd";
 const { Option } = Select;
 
 // Styled Components
@@ -180,11 +180,9 @@ function App() {
             {numeral(base_amount).format("0,0.00")}
           </BaseAmount>
         )}
-        <BaseCurrency>{base}</BaseCurrency>
         <Select
           defaultValue="CAD"
           style={{ width: 120 }}
-          loading={false}
           onChange={(value): void => setBase(value)}
         >
           <Option value="CAD">CAD</Option>
@@ -192,7 +190,9 @@ function App() {
           <Option value="DKK">DKK</Option>
           <Option value="SEK">SEK</Option>
         </Select>
-        <CAFlag style={{ paddingLeft: "8px", width: "32px" }} />
+        {React.createElement(FLAGS[base], {
+          style: { width: "32px", "padding-left": "8px" },
+        })}
       </CurrencyInput>
       <AccuracyDisclaimer>
         Exchange rates auto-updated on: {moment(data.date).format("LL")}
