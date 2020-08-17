@@ -1,19 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "a28ea1191d41aaf12469da81ddf47a2a",
+    "revision": "75a5089765a467f665efe81f6334da81",
     "url": "/currency-converter/index.html"
   },
   {
-    "revision": "ddc597848ffe267d6dd3",
-    "url": "/currency-converter/static/js/2.136538c1.chunk.js"
+    "revision": "bc7150b17f2fb59dfb30",
+    "url": "/currency-converter/static/css/2.04ff9426.chunk.css"
   },
   {
-    "revision": "74f4e1eda03d9ac324f4b3574b48fc97",
-    "url": "/currency-converter/static/js/2.136538c1.chunk.js.LICENSE.txt"
+    "revision": "bc7150b17f2fb59dfb30",
+    "url": "/currency-converter/static/js/2.f3fb5fe5.chunk.js"
   },
   {
-    "revision": "90bfd4f6babab3c2147b",
-    "url": "/currency-converter/static/js/main.b6ac4069.chunk.js"
+    "revision": "3098f83e5fa7a136279bcb0e71937139",
+    "url": "/currency-converter/static/js/2.f3fb5fe5.chunk.js.LICENSE.txt"
+  },
+  {
+    "revision": "99f1c57fcf6e74422dad",
+    "url": "/currency-converter/static/js/main.e1a45649.chunk.js"
   },
   {
     "revision": "bad0ac1f66954a2504d5",
