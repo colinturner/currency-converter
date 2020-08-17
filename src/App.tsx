@@ -46,10 +46,6 @@ const BaseAmount = styled.div`
   }
 `;
 
-const BaseCurrency = styled.span`
-  padding-left: 8px;
-`;
-
 const AccuracyDisclaimer = styled.div`
   padding-bottom: 16px;
 `;
@@ -155,7 +151,6 @@ function App() {
       setIsLoadingData(false);
       setData(result.data);
       setCache({ ...cache, [base]: result.data });
-      console.log("result!!! ", result.data);
     };
 
     fetchData();
@@ -192,7 +187,9 @@ function App() {
         >
           {DESIRED_DENOMINATIONS.filter((currency) => currency !== base).map(
             (currency) => (
-              <Option value={currency}>{currency}</Option>
+              <Option key={currency} value={currency}>
+                {currency}
+              </Option>
             )
           )}
         </Select>
@@ -212,7 +209,7 @@ function App() {
             foreign_denomination !== base
           ) {
             return (
-              <ResultWrapper>
+              <ResultWrapper key={foreign_denomination}>
                 <ForeignAmount>
                   {calculateForeignAmount({
                     rate: data.rates[foreign_denomination],
@@ -224,7 +221,7 @@ function App() {
                 </ForeignDenomination>
                 {FLAGS[foreign_denomination]
                   ? React.createElement(FLAGS[foreign_denomination], {
-                      style: { width: "32px", "padding-left": "8px" },
+                      style: { width: "32px", paddingLeft: "8px" },
                     })
                   : null}
               </ResultWrapper>
