@@ -83,16 +83,16 @@ const FLAGS: Record<string, any> = {
 };
 
 const DESIRED_DENOMINATIONS = [
-  "USD",
   "AUD",
-  "NZD",
+  "CAD",
+  "CHF",
+  "DKK",
   "EUR",
   "GBP",
   "NOK",
+  "NZD",
   "SEK",
-  "DKK",
-  "CHF",
-  "CAD",
+  "USD",
 ];
 
 // Interfaces
@@ -204,31 +204,35 @@ function App() {
         Exchange rates auto-updated on:{" "}
         {data.date ? moment(data.date).format("LL") : "Loading..."}
       </AccuracyDisclaimer>
-      {Object.keys(data.rates).map((foreign_denomination) => {
-        if (
-          DESIRED_DENOMINATIONS.includes(foreign_denomination) &&
-          foreign_denomination !== base
-        ) {
-          return (
-            <ResultWrapper>
-              <ForeignAmount>
-                {calculateForeignAmount({
-                  rate: data.rates[foreign_denomination],
-                  base_amount,
-                })}
-              </ForeignAmount>
-              <ForeignDenomination>{foreign_denomination}</ForeignDenomination>
-              {FLAGS[foreign_denomination]
-                ? React.createElement(FLAGS[foreign_denomination], {
-                    style: { width: "32px", "padding-left": "8px" },
-                  })
-                : null}
-            </ResultWrapper>
-          );
-        }
+      {Object.keys(data.rates)
+        .sort()
+        .map((foreign_denomination) => {
+          if (
+            DESIRED_DENOMINATIONS.includes(foreign_denomination) &&
+            foreign_denomination !== base
+          ) {
+            return (
+              <ResultWrapper>
+                <ForeignAmount>
+                  {calculateForeignAmount({
+                    rate: data.rates[foreign_denomination],
+                    base_amount,
+                  })}
+                </ForeignAmount>
+                <ForeignDenomination>
+                  {foreign_denomination}
+                </ForeignDenomination>
+                {FLAGS[foreign_denomination]
+                  ? React.createElement(FLAGS[foreign_denomination], {
+                      style: { width: "32px", "padding-left": "8px" },
+                    })
+                  : null}
+              </ResultWrapper>
+            );
+          }
 
-        return null;
-      })}
+          return null;
+        })}
     </Wrapper>
   );
 }
